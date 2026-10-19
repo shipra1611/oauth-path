@@ -14,7 +14,7 @@ ${(g.requirements||[]).length?`<h2>What you need to supply</h2><ul>${(g.requirem
 <h2>Gates and waits</h2><ul>${(g.blockers||[]).map(ev).join("")||"<li>No approval gate, fee or wait was found in the docs read. See still uncertain.</li>"}</ul>
 <h2>Steps</h2><ol>${li(g.steps)}</ol><h2>Who does what</h2><div class="two"><div><b>Agent can</b><ul>${li(g.agent)}</ul></div><div><b>You take over</b><ul>${li(g.you)}</ul></div></div>
 <h2>Still uncertain</h2><div class="warn"><ul>${li(g.uncertain)}</ul></div>
-<h2>What was tested</h2><p class="note">${esc(g.attempt&&g.attempt.notes)}</p>
+<h2>What was tested</h2><p class="note">${esc(g.attempt&&g.attempt.notes)}</p>${t?`<p><a href="/evidence/${esc(g.slug)}.png" target="_blank" rel="noopener">View screenshot of the attempt</a></p>`:""}
 <h2>Sources</h2><ul class="src">${(g.sources||[]).filter(s=>ok(s.url)).map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>${s.kind?` <span class="ev">${esc(s.kind)}</span>`:""}</li>`).join("")||"<li>None</li>"}</ul>
 <p class="note">Provenance: ${esc(g.generated)}</p><div class="row"><button id="cp">Copy share link</button></div></div>`;
 $("cp").onclick=()=>navigator.clipboard.writeText(location.origin+"/g/"+g.slug).then(()=>$("cp").textContent="Copied")}
