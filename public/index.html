@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>OAuth Path</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/style.css"></head><body><main>
+<h1>OAuth Path</h1><p class="sub">Look up an app. Get an honest guide to its OAuth app setup and approval: effort, wait, blockers, who does what.</p>
+<div class="row"><input id="q" placeholder="App name or website, e.g. HubSpot or linear.app"><button class="p" id="go">Generate guide</button></div>
+<div class="chips" id="chips"></div><p class="note" id="status"></p><div id="out"></div></main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const li=a=>(a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+const ok=u=>/^https?:\/\//.test(u||"");
+const ev=b=>`<li>${esc(b.text)} <span class="ev">${b.evidence==="unverified"?"unverified":(ok(b.source)?`<a href="${esc(b.source)}" target="_blank" rel="noopener">${b.evidence==="third-party"?"third-party source":"docs"}</a>`:b.evidence)}</span></li>`;
+function render(g){const d=["easy","medium","hard"].includes(g.difficulty)?g.difficulty:"medium";const t=g.attempt&&g.attempt.tested;
+$("out").innerHTML=`<div class="card"><h2 style="margin-top:0">${esc(g.app)} <span class="tag ${d}">${d}</span> <span class="ev">${t?"Setup attempted":"No setup attempt"}</span></h2><p>${esc(g.verdict)}</p>
+<div class="grid"><div class="stat"><b>Time</b>${esc(g.time)}</div><div class="stat"><b>Effort</b>${esc(g.effort)}</div></div>
+${(g.requirements||[]).length?`<h2>What you need to supply</h2><ul>${(g.requirements||[]).map(ev).join("")}</ul>`:""}
+<h2>Gates and waits</h2><ul>${(g.blockers||[]).map(ev).join("")||"<li>No approval gate, fee or wait was found in the docs read. See still uncertain.</li>"}</ul>
+<h2>Steps</h2><ol>${li(g.steps)}</ol><h2>Who does what</h2><div class="two"><div><b>Agent can</b><ul>${li(g.agent)}</ul></div><div><b>You take over</b><ul>${li(g.you)}</ul></div></div>
+<h2>Still uncertain</h2><div class="warn"><ul>${li(g.uncertain)}</ul></div>
+<h2>What was tested</h2><p class="note">${esc(g.attempt&&g.attempt.notes)}</p>
+<h2>Sources</h2><ul class="src">${(g.sources||[]).filter(s=>ok(s.url)).map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>${s.kind?` <span class="ev">${esc(s.kind)}</span>`:""}</li>`).join("")||"<li>None</li>"}</ul>
+<p class="note">Provenance: ${esc(g.generated)}</p><div class="row"><button id="cp">Copy share link</button></div></div>`;
+$("cp").onclick=()=>navigator.clipboard.writeText(location.origin+"/g/"+g.slug).then(()=>$("cp").textContent="Copied")}
+async function show(s){const r=await fetch("/api/guide/"+s);if(r.ok){render(await r.json());history.replaceState(0,"","/g/"+s)}}
+async function gen(){const q=$("q").value.trim();if(!q)return;$("go").disabled=true;$("status").textContent="Agent researching "+q+" (30 to 90 s) ...";
+try{const r=await fetch("/api/generate",{method:"POST",body:JSON.stringify({q})});const g=await r.json();if(!r.ok)throw new Error(g.error);render(g);history.replaceState(0,"","/g/"+g.slug);$("status").textContent="Done. Confirm against provider docs before relying on it."}
+catch(e){$("status").textContent="Failed: "+e.message}$("go").disabled=false}
+$("go").onclick=gen;$("q").onkeydown=e=>{if(e.key==="Enter")gen()};
+fetch("/api/guides").then(r=>r.json()).then(l=>{l.forEach(g=>{const b=document.createElement("button");b.textContent=g.app;b.onclick=()=>show(g.slug);$("chips").appendChild(b)});
+const p=location.pathname.startsWith("/g/")?location.pathname.slice(3):(l[0]||{}).slug;if(p)show(p)});
+</script></body></html>

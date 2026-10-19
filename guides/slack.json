@@ -1,0 +1,67 @@
+{
+  "slug": "slack",
+  "app": "Slack",
+  "consoleUrl": "https://api.slack.com/apps",
+  "difficulty": "easy",
+  "verdict": "Easy for your own workspace, a real gate if you want public distribution.",
+  "time": "Own workspace: under 1 hour (estimate, not from docs). Distribute to any workspace: about 1 to 2 days of work (estimate). Marketplace review time: not checked.",
+  "effort": "Low to medium",
+  "blockers": [
+    {
+      "text": "Distribution needs a public HTTPS redirect URL and no hardcoded secrets.",
+      "evidence": "unverified",
+      "source": ""
+    },
+    {
+      "text": "Apps distributed commercially but not approved for the Slack Marketplace are limited to 1 request per minute on conversations.history and conversations.replies, with a max of 15 objects per call. Applies to apps created after 2025-05-29 and to new installs of existing apps; internal customer-built apps are not affected.",
+      "evidence": "docs",
+      "source": "https://docs.slack.dev/changelog/2025/05/29/rate-limit-changes-for-non-marketplace-apps/"
+    },
+    {
+      "text": "Marketplace review needs privacy policy, support contact and a working demo.",
+      "evidence": "unverified",
+      "source": ""
+    }
+  ],
+  "steps": [
+    "Create an app at api.slack.com/apps (from scratch).",
+    "Under OAuth & Permissions add redirect URL and the minimum bot and user scopes.",
+    "Install to your dev workspace and test the token exchange (oauth.v2.access).",
+    "Under Manage Distribution, complete the checklist and activate public distribution.",
+    "If you need discoverability or higher limits, submit to the Slack Marketplace."
+  ],
+  "agent": [
+    "Draft the scope list from the actions your agent needs",
+    "Generate the redirect and token-exchange code",
+    "Run an install against a test workspace you own and check the returned scopes"
+  ],
+  "you": [
+    "Create the app in your Slack account",
+    "Own the domain, HTTPS endpoint and privacy policy",
+    "Submit the Marketplace form and answer reviewer questions"
+  ],
+  "uncertain": [
+    "Marketplace review duration varies by queue.",
+    "Marketplace review requirements and duration were not checked against Slack's docs.",
+    "Whether distribution needs a public HTTPS redirect URL was not checked."
+  ],
+  "sources": [
+    {
+      "title": "Slack OAuth docs",
+      "url": "https://api.slack.com/authentication/oauth-v2"
+    },
+    {
+      "title": "Distribution",
+      "url": "https://api.slack.com/start/distributing"
+    },
+    {
+      "title": "Marketplace guidelines",
+      "url": "https://api.slack.com/start/distributing/guidelines"
+    }
+  ],
+  "attempt": {
+    "tested": false,
+    "notes": "No live setup attempt recorded. Run scripts/attempt.mjs."
+  },
+  "generated": "seed, hand-drafted; rate-limit claim verified 2026-10-20, other claims unverified (see VERIFICATION.md)"
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "google",
+  "app": "Google (Gmail / Drive)",
+  "consoleUrl": "https://console.cloud.google.com/apis/credentials",
+  "difficulty": "hard",
+  "verdict": "Easy to prototype, slow and costly to launch if you touch sensitive or restricted scopes.",
+  "time": "Prototype: 1 to 2 hours. Sensitive scope verification: days to a few weeks. Restricted scopes (Gmail read, full Drive): weeks to months including a third-party security assessment.",
+  "effort": "High for restricted scopes",
+  "blockers": [
+    {
+      "text": "Apps in Testing status are limited to 100 listed test users, and authorizations expire 7 days after consent (including refresh tokens), except apps that only request name, email and profile scopes.",
+      "evidence": "docs",
+      "source": "https://support.google.com/cloud/answer/15549945"
+    },
+    {
+      "text": "Apps with restricted scopes that access data through a third-party server must pass an annual security assessment by a Google-approved independent assessor (reassessment at least every 12 months).",
+      "evidence": "docs",
+      "source": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification"
+    },
+    {
+      "text": "Needs a verified domain, privacy policy, homepage and a demo video showing scope use.",
+      "evidence": "unverified",
+      "source": ""
+    },
+    {
+      "text": "Unverified apps show a scary warning screen to users.",
+      "evidence": "unverified",
+      "source": ""
+    }
+  ],
+  "steps": [
+    "Create a Cloud project and enable the API (Gmail, Drive, etc).",
+    "Configure the OAuth consent screen and add the narrowest scopes possible.",
+    "Create an OAuth client ID (web) with redirect URIs.",
+    "Prototype in Testing mode with listed test users.",
+    "Publish to production and submit for verification; record the demo video.",
+    "If restricted scopes: complete the security assessment."
+  ],
+  "agent": [
+    "Pick the narrowest scopes and explain why, which directly cuts the review burden",
+    "Write the consent-screen justification text and a demo video script",
+    "Generate the OAuth flow code and test it with a test user"
+  ],
+  "you": [
+    "Create the Cloud project and verify domain ownership",
+    "Record the demo video and respond to Google reviewers",
+    "Pay for and schedule the security assessment if required"
+  ],
+  "uncertain": [
+    "Assessment pricing and timelines vary by vendor and year.",
+    "Verification wait is highly variable per application.",
+    "Assessment cost, verified-domain, privacy-policy, demo-video and unverified-app-warning claims were not checked.",
+    "Timeline figures (days to weeks, weeks to months) are estimates, not from docs."
+  ],
+  "sources": [
+    {
+      "title": "OAuth app verification",
+      "url": "https://support.google.com/cloud/answer/9110914"
+    },
+    {
+      "title": "Restricted scope verification",
+      "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification"
+    },
+    {
+      "title": "Scope list",
+      "url": "https://developers.google.com/identity/protocols/oauth2/scopes"
+    }
+  ],
+  "attempt": {
+    "tested": false,
+    "notes": "No live setup attempt recorded. Run scripts/attempt.mjs."
+  },
+  "generated": "seed, hand-drafted; testing-mode and assessment claims verified 2026-10-20, others unverified (see VERIFICATION.md)"
+}

@@ -1,0 +1,67 @@
+{
+  "slug": "notion",
+  "app": "Notion",
+  "consoleUrl": "https://www.notion.so/my-integrations",
+  "difficulty": "easy",
+  "verdict": "Internal integrations work immediately in your own workspace. Public integrations use OAuth, and Notion's docs say the Authorization URL only appears after a public connection is submitted for review. Review timing and criteria are not documented in the page checked.",
+  "time": "Internal: under 1 hour (estimate). Public: review step exists per the docs; wait not documented.",
+  "effort": "Low",
+  "blockers": [
+    {
+      "text": "A public connection must be submitted for review before its Authorization URL is populated.",
+      "evidence": "docs",
+      "source": "https://developers.notion.com/docs/authorization"
+    },
+    {
+      "text": "Users must pick which pages to share at consent, so an empty workspace result is common and not a bug.",
+      "evidence": "unverified",
+      "source": ""
+    },
+    {
+      "text": "Public integrations need company, privacy policy and terms URLs at creation.",
+      "evidence": "unverified",
+      "source": ""
+    },
+    {
+      "text": "Capabilities (read, update, insert) are set on the integration, not per request.",
+      "evidence": "unverified",
+      "source": ""
+    }
+  ],
+  "steps": [
+    "Open my-integrations and create a new integration; set type to Public.",
+    "Fill company info, privacy and terms URLs, and add redirect URIs.",
+    "Copy the OAuth client ID and secret.",
+    "Send users to the authorization URL, then exchange the code at the token endpoint.",
+    "Handle the page selection step and test with a workspace you own."
+  ],
+  "agent": [
+    "Generate the auth URL and token-exchange code",
+    "Run the flow end to end on a test workspace you control",
+    "Draft the privacy and terms pages"
+  ],
+  "you": [
+    "Create the integration under your Notion account",
+    "Host the policy pages on your domain"
+  ],
+  "uncertain": [
+    "Review criteria and duration for public connections were not found.",
+    "Whether company, privacy policy and terms URLs are required at creation was not confirmed.",
+    "Marketplace or gallery listing is a separate process and was not checked."
+  ],
+  "sources": [
+    {
+      "title": "Authorization guide",
+      "url": "https://developers.notion.com/docs/authorization"
+    },
+    {
+      "title": "Create an integration",
+      "url": "https://developers.notion.com/docs/create-a-notion-integration"
+    }
+  ],
+  "attempt": {
+    "tested": false,
+    "notes": "No live setup attempt recorded. Run scripts/attempt.mjs."
+  },
+  "generated": "seed, hand-drafted; corrected after verification 2026-10-20 (see VERIFICATION.md)"
+}

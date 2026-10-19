@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: oauth-path
+    runtime: node
+    plan: free
+    startCommand: node server.mjs
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false

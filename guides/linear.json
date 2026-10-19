@@ -1,0 +1,170 @@
+{
+  "app": "linear.app",
+  "supportsOAuth": true,
+  "difficulty": "medium",
+  "verdict": "Creating a private OAuth app for a single workspace is straightforward, with clear documentation for required fields and manifest options. Making an app public or an agent available to other workspaces introduces a submission/approval process and potentially requires a paid Linear plan for the approval feature. Rate limits are clearly defined.",
+  "time": "Working time (estimate, not from docs): about 1-2 hours for initial setup and configuration. Approval wait time for public apps is not documented.",
+  "effort": "Moderate developer effort for setup and configuration, with additional steps for public app submission and potential review.",
+  "requirements": [
+    {
+      "text": "A dedicated workspace is recommended for managing the OAuth2 Application.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-2-0-authentication"
+    },
+    {
+      "text": "The `display.description` field must be a short, user-facing description (max 1000 characters).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `display.iconUrl` field must be an absolute HTTP/HTTPS URL for the application icon (recommendation: 256x256px).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `developer.name` field is required for complete setup (min 2, max 80 characters).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `oauth.client_name` field is required for complete setup (min 2, max 80 characters, must not contain 'Linear', 'http://', or 'https://').",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `oauth.client_uri` field is required for complete setup (absolute HTTP/HTTPS URL).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `oauth.redirect_uris` field is required for complete setup (one or more absolute HTTP/HTTPS URLs, repeatable, min 1, max 32, values must be unique).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "The `oauth.grant_types` field must include `authorization_code` (always required) and can optionally include `client_credentials` (repeatable).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "If `webhook.url` is set, it must be an absolute HTTPS URL and cannot be a loopback, private-network, or `linear.app` host.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "If `webhook.url` is set, `webhook.resourceTypes` must specify at least one resource type (repeatable, values must be unique).",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-app-manifests"
+    },
+    {
+      "text": "For agents, enabling webhooks and selecting 'Agent session events' is required.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/agents"
+    },
+    {
+      "text": "Integrations using the `actor=app` mode cannot request the `admin` scope.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/oauth-2-0-authentication"
+    }
+  ],
+  "blockers": [
+    {
+      "text": "To make an agent available to other workspaces, it must be submitted to Linear's integration directory for approval.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/agents"
+    },
+    {
+      "text": "Third-party app approvals, which allow admins to review and approve apps before installation, are available only on paid Linear plans.",
+      "evidence": "docs",
+      "source": "https://linear.app/docs/billing-and-plans"
+    },
+    {
+      "text": "Calls to the GraphQL API are rate-limited to 5,000 requests per User (or App User) per 1 hour for OAuth Apps.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/rate-limiting"
+    },
+    {
+      "text": "GraphQL API calls have a complexity limit of 2,000,000 points per User (or App User) per 1 hour, with a maximum complexity of 10,000 points for a single query.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/rate-limiting"
+    },
+    {
+      "text": "Webhooks have quotas limiting them to 30 per team and 50 per workspace.",
+      "evidence": "docs",
+      "source": "https://linear.app/developers/rate-limiting"
+    }
+  ],
+  "steps": [
+    "Create a dedicated workspace for the OAuth2 Application (recommended).",
+    "Navigate to the OAuth application creation form.",
+    "Fill in required application details such as display name, description, icon URL, developer name, client URI, and redirect URIs.",
+    "Specify the required OAuth grant types, ensuring `authorization_code` is included.",
+    "Define desired scopes for the application's access.",
+    "Configure webhook settings if needed, providing a HTTPS URL and selecting resource types.",
+    "For public apps or agents, submit the application to Linear's integration directory for review and approval."
+  ],
+  "agent": [
+    "Draft the OAuth application manifest or URL parameters with required fields and scopes.",
+    "Generate example code for the OAuth flow based on the specified grant types and redirect URIs.",
+    "Test the OAuth flow against a developer-owned Linear account to verify token exchange and API access."
+  ],
+  "you": [
+    "Create a Linear account and a dedicated workspace for app development.",
+    "Provide the legal homepage/documentation URL (`oauth.client_uri`) and privacy policy URL (if applicable, though not explicitly required in notes).",
+    "Review and approve the drafted application details, scopes, and webhook configurations.",
+    "If making the app public or an agent, submit it to Linear's integration directory and potentially ensure the workspace is on a paid plan for the approval feature."
+  ],
+  "uncertain": [
+    "Security assessments are not stated as a requirement for app approval.",
+    "Specific wait times for app review or approval processes are not documented."
+  ],
+  "consoleUrl": "https://linear.app/settings/api/applications/new",
+  "sources": [
+    {
+      "title": "linear.app: Rate limiting",
+      "url": "https://linear.app/developers/rate-limiting",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: Agents",
+      "url": "https://linear.app/developers/agents",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: OAuth 2 0 authentication",
+      "url": "https://linear.app/developers/oauth-2-0-authentication",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: OAuth app manifests",
+      "url": "https://linear.app/developers/oauth-app-manifests",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: Billing and plans",
+      "url": "https://linear.app/docs/billing-and-plans",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: Changelog",
+      "url": "https://linear.app/changelog",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: Aup",
+      "url": "https://linear.app/legal/aup",
+      "kind": "official"
+    },
+    {
+      "title": "linear.app: Privacy",
+      "url": "https://linear.app/privacy",
+      "kind": "official"
+    }
+  ],
+  "slug": "linear",
+  "generated": "live agent 2026-10-19, web search only, no setup attempt",
+  "attempt": {
+    "tested": false,
+    "notes": "No live setup attempt recorded."
+  }
+}

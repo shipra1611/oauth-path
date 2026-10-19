@@ -1,0 +1,22 @@
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fafaf7;--fg:#1b1b18;--mut:#6b6b63;--card:#fff;--bd:#e3e2db;--ac:#2d5be3;--g:#1f8a4c;--y:#b7791f;--r:#c0392b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141412;--fg:#ecebe5;--mut:#9a9990;--card:#1d1d1a;--bd:#33332e;--ac:#7c9cff;--g:#4cc380;--y:#e0a940;--r:#ef7a6b}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:820px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:26px 0 8px}p.sub{color:var(--mut);margin:0 0 18px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+input{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit}
+button{padding:10px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit;cursor:pointer}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac)}button:disabled{opacity:.5}
+.chips{margin:12px 0 4px}.chips button{border-radius:99px;padding:6px 12px}.chips button.on{border-color:var(--ac);color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-top:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.stat{border:1px solid var(--bd);border-radius:10px;padding:10px}.stat b{display:block;font-size:12px;color:var(--mut);font-weight:500}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;border:1px solid currentColor}
+.easy{color:var(--g)}.medium{color:var(--y)}.hard{color:var(--r)}
+ol,ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.note{font-size:13px;color:var(--mut)}.warn{border-left:3px solid var(--y);padding:6px 10px;margin:8px 0;background:var(--bg)}
+.src a{color:var(--ac);word-break:break-all}.ev{font-size:12px;margin-left:6px;color:var(--mut)}
+pre{white-space:pre-wrap;background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--bd);overflow-x:auto;font-size:13px}
