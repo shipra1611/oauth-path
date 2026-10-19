@@ -1,16 +1,24 @@
 # OAuth Path
 Look up an app, get a shareable guide to creating its OAuth app and getting it approved: difficulty, working time vs approval wait, blockers, steps, what an agent can do vs where the human takes over, and what is unverified.
 
-Live demo: https://oauth-path.onrender.com
+**Live demo:** https://oauth-path.onrender.com
 
 ## Run
 ```
 # free: key from https://aistudio.google.com/apikey
-export GEMINI_API_KEY=...             # or ANTHROPIC_API_KEY=sk-ant-... to use Claude instead
+export GEMINI_API_KEY=...             # PowerShell: $env:GEMINI_API_KEY="..."  # or ANTHROPIC_API_KEY=sk-ant-... to use Claude instead
 node server.mjs                       # Node 18+, zero dependencies
 ```
 Open http://localhost:3000. Library: Slack, Google, Notion (hand-drafted seeds, partly verified) plus any guides generated live. Any other app runs the agent live (30 to 90 s); the result is saved to `guides/<slug>.json` and shared at `/g/<slug>`.
 Setup attempts (optional): `npm i playwright && npx playwright install chromium`, log in once with `npx playwright codegen --save-storage=auth.json <console-url>`, then `node scripts/attempt.mjs <slug> <console-url> auth.json`. Output in `evidence/` overrides the guide's "what was tested" section.
+
+## The problem, and why this scope
+A **provider OAuth app** is the registration a developer creates with a service (Slack, HubSpot, Google...) that gives their product a client ID and secret, the redirect URLs, the scopes it may request, and the name users see on the consent screen. Their integration uses it to run the OAuth flow, and each of their end users then makes their own *connection* by approving it. Some platforms, such as Composio, can supply a *managed* OAuth app so a developer can skip registration. A developer still needs their own app when no managed one exists for a service, or when they want their own name on the consent screen, custom scopes, or their own rate-limit quota (per Composio's managed-auth docs). That is where the pain is: registration forms, review queues and plan restrictions that differ per provider.
+
+So the guide leads with what a developer cannot easily see from docs: **how hard it is, how long it takes (working time vs approval wait), and what gates it**, then the steps, and then where an agent helps and where a human has to act. I chose depth and honesty over breadth: a few guides whose claims are checked against provider docs, plus a live agent that investigates any app. Every claim carries an evidence level (official docs, third-party source, or unverified), because a wrong "no review needed" costs a developer more than an empty field.
+
+## Scaling to 100 apps
+The library is plain JSON files, so scaling is a data task: run the same agent over a list of apps (paced for the key's rate limit), then spot-check each guide against its sources before publishing, as done in VERIFICATION.md. Verification is the bottleneck, not generation, so unreviewed guides are shown as drafts.
 
 ## Key decisions
 - **Guide, not tutorial.** The developer's real question is "how long and what can block me", so difficulty, wait and blockers lead; steps follow.
@@ -36,13 +44,13 @@ The first live agent version produced confident but wrong guides. I checked them
 - **Linear, second run:** the agent presented a workspace-admin feature (paid-plan app approvals) as a developer gate. Added a prompt rule separating developer gates from customer-side features.
 - **Seed guides:** Notion's "public integrations need no review" was wrong per Notion's docs and was corrected; Slack's rate-limit claim was right but cited the wrong page and is now specific (1 request/min, 15 objects, apps created after 2025-05-29); Google's testing-mode and assessment claims were confirmed with their exceptions. Unchecked seed claims are marked unverified.
 
-## Key decisions added during the build
+## More decisions made during the build
 - **Three passes, evidence enforced in code.** Discover official docs, read them (only pages actually retrieved count as evidence), then structure. Sources are built in code from retrieved pages; the model cannot add one.
 - **Requirements vs gates and waits.** Field validation is not the same as an approval wait; a developer asking "how long and what blocks me" needs the second list first.
 - **Honest empties.** "No approval gate found in the docs read" is shown instead of invented blockers; unsupported items go to "still uncertain".
 - **Free-tier operation.** Runs on a free Gemini key with request pacing and model fallback; the server caps live generations per IP and per day (`GEN_PER_IP_HOUR`, `GEN_PER_DAY`). Guides are cached on disk, so repeat lookups cost nothing.
 
-## Limitations
+## Limitations from the build (live agent and hosting)
 - **No setup attempt was run.** Every guide says "No setup attempt". `scripts/attempt.mjs` exists but I did not run it, so nothing here was tested by actually creating an app.
 - The agent depends on Gemini search and page reading; it can miss official pages (as it did for HubSpot at first), and cannot read pages behind logins or JavaScript-only consoles.
 - The "official" label is a domain heuristic and can be wrong (for example `developers.google.com` when the query is "gmail").
