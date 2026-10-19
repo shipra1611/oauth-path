@@ -1,0 +1,22 @@
+{
+  "tested": true,
+  "notes": "2026-10-20, logged-in session on a free personal Notion account. Opened app.notion.com/developers/connections (Developer tools) and clicked \"New connection\". The create form shows a name field (pre-filled with a default name) and a choice of two auth types: \"API token\" (described as a workspace-scoped static API token shared across collaborators) and \"OAuth\" (described as user-scoped OAuth 2.0 with access limited to the signed-in user). Description text was cut off by the recorder after 80 characters. The UI calls these \"connections\", while Notion's docs and older guides say \"integrations\". Nothing was filled in or submitted, so no app was created. Not tested: the OAuth path itself, public distribution, and the review step.",
+  "fields": [
+    {
+      "label": "Connection name (default pre-filled)",
+      "type": "text",
+      "required": false
+    },
+    {
+      "label": "Auth type: API token",
+      "type": "option",
+      "required": false
+    },
+    {
+      "label": "Auth type: OAuth",
+      "type": "option",
+      "required": false
+    }
+  ],
+  "screenshot": "/evidence/notion.png"
+}

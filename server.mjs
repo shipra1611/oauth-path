@@ -19,6 +19,7 @@ http.createServer(async(req,res)=>{
   try{const g=await research(q,m=>console.log(s,m));g.slug=s;g.generated="live agent "+new Date().toISOString().slice(0,10)+", web search only, no setup attempt";
    g.attempt={tested:false,notes:"No live setup attempt recorded."};if(g.sources&&g.sources.length)fs.writeFileSync(path.join(D,"guides",s+".json"),JSON.stringify(g,null,2));else g.generated+=" (low evidence: no docs pages could be read, not saved)";return send(res,200,g)}
   catch(e){return send(res,500,{error:e.message})}}
+ if(u.pathname.startsWith("/evidence/")){const n=path.basename(u.pathname);const fp=path.join(D,"evidence",n);if(/^[a-z0-9-]+\.png$/.test(n)&&fs.existsSync(fp))return send(res,200,fs.readFileSync(fp),"image/png");return send(res,404,"not found","text/plain")}
  const f=u.pathname==="/"||u.pathname.startsWith("/g/")?"index.html":u.pathname.slice(1);
  const p=path.join(D,"public",path.normalize(f).replace(/^(\.\.[\/\\])+/,""));
  if(!p.startsWith(path.join(D,"public"))||!fs.existsSync(p))return send(res,404,"not found","text/plain");

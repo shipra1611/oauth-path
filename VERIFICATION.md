@@ -28,4 +28,5 @@ Seed guides were drafted from memory of provider docs; four claims were checked 
 | linear (second run) | Third-party app approvals are only on paid plans, shown as a gate and as a possible cost to the developer | linear.app/docs/third-party-application-approvals | corrected: feature for workspace admins on paid plans; not a developer gate | 2026-10-19 |
 | linear (second run) | Webhook quotas of 30 per team and 50 per workspace | rate-limiting page (links to separate webhooks docs) | could not verify | 2026-10-19 |
 | linear (second run) | New requirement and gate sections (field names, exact limits, official source labels) | manifests page, rate-limiting page | confirmed improvement over first run | 2026-10-19 |
+| notion | Creating a connection lets you choose between an API token and OAuth 2.0 | live setup attempt (Playwright, logged-in free account), evidence/notion.json and notion.png | confirmed by observation; form opened but nothing submitted. UI says "connection" where docs say "integration" | 2026-10-20 |
 

@@ -1,7 +1,7 @@
 {
   "slug": "notion",
   "app": "Notion",
-  "consoleUrl": "https://www.notion.so/my-integrations",
+  "consoleUrl": "https://app.notion.com/developers/connections",
   "difficulty": "easy",
   "verdict": "Internal integrations work immediately in your own workspace. Public integrations use OAuth, and Notion's docs say the Authorization URL only appears after a public connection is submitted for review. Review timing and criteria are not documented in the page checked.",
   "time": "Internal: under 1 hour (estimate). Public: review step exists per the docs; wait not documented.",
@@ -29,7 +29,9 @@
     }
   ],
   "steps": [
-    "Open my-integrations and create a new integration; set type to Public.",
+    "Open Developer tools > Connections (app.notion.com/developers/connections) and click New connection. Observed 2026-10-20: the UI calls them connections, older docs say integrations.",
+    "Choose the auth type. Observed 2026-10-20: the form offers API token (workspace-scoped, shared across collaborators) or OAuth (user-scoped OAuth 2.0). Pick OAuth for an app your users connect to their own accounts.",
+    "For installs by other workspaces, Notion's docs say a public connection is submitted for review before its Authorization URL is populated. Not tested in the console attempt.",
     "Fill company info, privacy and terms URLs, and add redirect URIs.",
     "Copy the OAuth client ID and secret.",
     "Send users to the authorization URL, then exchange the code at the token endpoint.",
