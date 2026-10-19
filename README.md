@@ -1,6 +1,8 @@
 # OAuth Path
 Look up an app, get a shareable guide to creating its OAuth app and getting it approved: difficulty, working time vs approval wait, blockers, steps, what an agent can do vs where the human takes over, and what is unverified.
 
+Live demo: https://oauth-path.onrender.com
+
 ## Run
 ```
 # free: key from https://aistudio.google.com/apikey
@@ -9,7 +11,7 @@ node server.mjs                       # Node 18+, zero dependencies
 ```
 Open http://localhost:3000. Library: Slack, Google, Notion (hand-drafted seeds, partly verified) plus any guides generated live. Any other app runs the agent live (30 to 90 s); the result is saved to `guides/<slug>.json` and shared at `/g/<slug>`.
 Setup attempts (optional): `npm i playwright && npx playwright install chromium`, log in once with `npx playwright codegen --save-storage=auth.json <console-url>`, then `node scripts/attempt.mjs <slug> <console-url> auth.json`. Output in `evidence/` overrides the guide's "what was tested" section.
-Live demo: https://oauth-path.onrender.com
+
 ## Key decisions
 - **Guide, not tutorial.** The developer's real question is "how long and what can block me", so difficulty, wait and blockers lead; steps follow.
 - **Evidence per claim.** Fetched-page evidence only counts as `docs`. Blockers are tagged `docs` with the URL the agent retrieved, or `unverified`. The agent must say "not documented" instead of guessing wait times.
